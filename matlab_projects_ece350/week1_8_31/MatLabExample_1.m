@@ -19,7 +19,7 @@ figure;
 % set up to put two plots in one window
 subplot(2,1,1)
 
-plot(t,u(t+0.004) - u(t-0.004), '-a')
+plot(t,u(t+0.004) - u(t-0.004), '-*')
 % activate grid
 grid on; 
 % Axis labels
