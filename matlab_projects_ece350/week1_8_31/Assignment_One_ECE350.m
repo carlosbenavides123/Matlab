@@ -1,6 +1,7 @@
-% fileName: MatlabExample_1.m
+% fileName: Assignment_One_ECE350.m
+% This is assignment one
 % last modified by Carlos Benavides
-% 9/1/2018
+% 9/6/2018
 
 % objective:
 % z(t) = 3cos(1000*pi*t)*e^(-1000t)[u(t+0.001)-u(t-0.003)]
