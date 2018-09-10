@@ -1,7 +1,7 @@
 
-syms y(t); % be careful performance issue.
+syms y(t) % be careful performance issue.
 
-eq = diff(y) == exp(-t) - 2*y;
+eq = diff(y) == exp(-t) - 2*y
 
 % find genreal solution
 dsolve( eq )
