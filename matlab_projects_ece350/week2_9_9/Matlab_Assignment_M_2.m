@@ -9,8 +9,8 @@ format compact
 
 % Define dialog properties
 prompt = {
-            'Enter coefficient of dx/dt:',
-            'Enter coefficient of x:',
+            'Enter coefficient of dy/dt:',
+            'Enter coefficient of y:',
             'Enter y(0):',
             'Enter dy(0)/dt:',
         };
