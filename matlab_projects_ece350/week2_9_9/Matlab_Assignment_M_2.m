@@ -1,5 +1,10 @@
 % filename: Matlab_Assignment_M_2.m
 % last modified: Carlos Benavides 9/9/2018
+
+% Group Members:
+% Carlos Benavides
+% Arnold Ortega
+
 % This is assignment 2.
 
 % clear the screen...
