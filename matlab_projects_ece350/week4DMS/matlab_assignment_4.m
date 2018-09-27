@@ -19,12 +19,12 @@ format compact
 
 % define functions
 u = @(t) 1.0.*(t>=0);
-h = @(t,tc) 2 * exp(-t/tc).*u(t)
+h = @(t,tc) 2*exp(-t/tc).*u(t);
 x = @(t) ((u(t-2)-u(t-2.1))+(u(t-4)-u(t-4.1))+(u(t-6)-u(t-6.1))+(u(t-8)-u(t-8.1)));
 
 % Define dialog properties
 prompt = {
-            'Enter a value for t_c',
+            'Enter a value for t_c'
         };
 title = 'MatLab Assignment 4';
 opts.Resize='on'
@@ -35,22 +35,23 @@ answer = inputdlg(prompt,title)
 % convert to num
 tc = str2num(answer{1})
 
-tMax = 5;
+tMax = 10;
 tCountMax = tc;
-dt = ( tMax / tCountMax )
+dt = ( tMax / tCountMax );
 
 for tCount = 1:tCountMax
-    t(tCount) = tCount*dt
-    y(tCount) = 0
-    for tauCount = 1:tCountMax
-        tau = tauCount*dt
-        y(tCount) = y(tCount) + x(tau)*h(t(tCount)-tau,tCountMax)*dt
+    t(tCount) = tCount*dt;
+    y(tCount) = 0;
+    for tauCount = 1:tCountMax;
+        tau = tauCount*dt;
+        y(tCount) = y(tCount) + x(tau).*h(t(tCount)-tau,tau)*dt;
     end 
 end 
 
 figure;
 subplot(3,1,1)
 plot(t,x(t),'linewidth',2)
+xlim([0 10])
 ylabel('x(t)')
 grid on 
 subplot(3,1,2)
