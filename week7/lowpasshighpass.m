@@ -30,13 +30,13 @@ answer = inputdlg(prompt,title)
 % extract values from input 
 % convert to num
 startFreq = str2num(answer{1})
-stopFreq = str2num(answer{2})
+stopFreq = 1e(str2num(answer{2}))
 hpOrder = str2num(answer{3})
 Rhp = str2num(answer{4})
-Chp = str2num(answer{5})
+Chp = 10e(-str2num(answer{5}))
 lpOrder = str2num(answer{6})
 Rlp = str2num(answer{7})
-Clp = str2num(answer{8})
+Clp = 1e(-str2num(answer{8}))
 
 H(s) = subs(H(s));
 nSteps = 400;
