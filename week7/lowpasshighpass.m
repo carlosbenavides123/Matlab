@@ -13,34 +13,48 @@ H(s) = expand(H(s));
 
 % Define dialog properties
 prompt = {
-            'Enter coefficient of startFreq',
-            'Enter coefficient of stopFreq',
+            'Enter value for e to the power for startFreq ',
+            'Enter value for e to the power for stopFreq',
             'Enter coefficient of hpOrder',
             'Enter coefficient of Rhp',
-            'Enter coefficient of Chp',
+            'Enter value (negative) for e to the power for Chp',
             'Enter coefficient of lpOrder',
             'Enter coefficient of Rlp',
-            'Enter coefficient of Clp'
+            'Enter value (negative) for e to the power for Clp'
         };
-title = 'MatLab Assignment 2';
-opts.Resize='on'
-opts.WindowStyle = 'normal'
-answer = inputdlg(prompt,title)
+title               = 'MatLab Assignment 2';
+opts.Resize         = 'on'
+opts.WindowStyle    = 'normal'
+answer              = inputdlg(prompt,title)
 
+
+% i tried 
+%     {'1'   }{'1'   }{'6'   }{'1000'}{'-6'  }{'1'   }{'100' }{'-6'  }
+% and it looked pretty well
 % extract values from input 
 % convert to num
-startFreq = str2num(answer{1})
-stopFreq = 1e(str2num(answer{2}))
-hpOrder = str2num(answer{3})
-Rhp = str2num(answer{4})
-Chp = 10e(-str2num(answer{5}))
-lpOrder = str2num(answer{6})
-Rlp = str2num(answer{7})
-Clp = 1e(-str2num(answer{8}))
+
+% his powerpoint value is
+% startFreq = 1e2; stopFreq = 1e6;
+startFreq   = power(1,str2num(answer{1}))
+stopFreq    = power(10,str2num(answer{2}))
+
+% his powerpoint value is
+% hpOrder = 1; hp = 1000; Chp = 10e-6;
+hpOrder     = str2num(answer{3})
+Rhp         = str2num(answer{4})
+Chp         = power(10,str2num(answer{5}))
+
+% power point value is 
+% lpOrder = 1; Rlp = 100; Clp = 1e-6;
+lpOrder     = str2num(answer{6})
+Rlp         = str2num(answer{7})
+Clp         = power(10,str2num(answer{8}))
 
 H(s) = subs(H(s));
 nSteps = 400;
 dLog = (log10(stopFreq)-log10(startFreq))/nSteps;
+
 
 freq(1) = startFreq;
 for fCount = 1: nSteps
