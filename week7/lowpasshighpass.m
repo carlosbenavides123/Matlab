@@ -1,12 +1,19 @@
-%file name: bpf.m
-%Last modified by David Schwartz on 10/10/2018
+% ECE 350 Matlab Assignment M-5
+% Name: Carlos Benavides
+% In collaboration with: Arnold Ortega
+
 clear all
 format compact
 
+% define sysmbolic variables that will be used.
 syms s t Chp Clp Rhp Rlp H(s) hpOrder lpOrder
 
+% impedance High Pass
 zHP = Rhp/((1/(Chp*s))+ Rhp);
+
+% impedeance low pass
 zLP =(1/(Clp*s)) /( (1/(Clp*s))+ Rlp);
+
 H(s) = (zHP^hpOrder)*(zLP^lpOrder);
 H(s) = simplify(H(s));
 H(s) = expand(H(s));
@@ -17,46 +24,40 @@ prompt = {
             'Enter value for e to the power for stopFreq',
             'Enter coefficient of hpOrder',
             'Enter coefficient of Rhp',
-            'Enter value (negative) for e to the power for Chp',
+            'Enter coefficient of Chp (pico wise operation)',
             'Enter coefficient of lpOrder',
             'Enter coefficient of Rlp',
-            'Enter value (negative) for e to the power for Clp'
+            'Enter coefficient of Clp (pico wise operation)'
         };
-title               = 'MatLab Assignment 2';
+title               = 'MatLab Assignment 5';
 opts.Resize         = 'on'
 opts.WindowStyle    = 'normal'
 answer              = inputdlg(prompt,title)
 
+% use power to mimic 1e10
+% because can't use 1estr2num(answer{1})
+startFreq   = power(10,str2double(answer{1}))
+stopFreq    = power(10,str2double(answer{2}))
 
-% i tried 
-%     {'1'   }{'1'   }{'6'   }{'1000'}{'-6'  }{'1'   }{'100' }{'-6'  }
-% and it looked pretty well
-% extract values from input 
-% convert to num
+% highpass properties
+hpOrder     = str2double(answer{3})
+Rhp         = str2double(answer{4})
+Chp         = str2double(answer{5})*power(10,-6)%pico wise operation
 
-% his powerpoint value is
-% startFreq = 1e2; stopFreq = 1e6;
-startFreq   = power(1,str2num(answer{1}))
-stopFreq    = power(10,str2num(answer{2}))
+% low pass properties
+lpOrder     = str2double(answer{6})
+Rlp         = str2double(answer{7})
+Clp         = str2double(answer{8})*power(10,-6)%pico wise operation
 
-% his powerpoint value is
-% hpOrder = 1; hp = 1000; Chp = 10e-6;
-hpOrder     = str2num(answer{3})
-Rhp         = str2num(answer{4})
-Chp         = power(10,str2num(answer{5}))
+% Give H(s) the symbolic function to use
+H(s) = subs(H(s))
 
-% power point value is 
-% lpOrder = 1; Rlp = 100; Clp = 1e-6;
-lpOrder     = str2num(answer{6})
-Rlp         = str2num(answer{7})
-Clp         = power(10,str2num(answer{8}))
-
-H(s) = subs(H(s));
+% our for loop count
 nSteps = 400;
 dLog = (log10(stopFreq)-log10(startFreq))/nSteps;
 
 
-freq(1) = startFreq;
+freq(1) = startFreq
 for fCount = 1: nSteps
     w = j*freq(fCount)*2*pi;
     Hval = subs(H(s),w);
