@@ -15,8 +15,8 @@ zHP = Rhp/((1/(Chp*s))+ Rhp);
 zLP =(1/(Clp*s)) /( (1/(Clp*s))+ Rlp);
 
 H(s) = (zHP^hpOrder)*(zLP^lpOrder);
-H(s) = simplify(H(s));
-H(s) = expand(H(s));
+H(s) = simplify(H(s));%simplify the equation
+H(s) = expand(H(s));% give the extended solution
 
 % Define dialog properties
 prompt = {
@@ -53,30 +53,31 @@ Clp         = str2double(answer{8})*power(10,-6)%pico wise operation
 H(s) = subs(H(s))
 
 % our for loop count
-nSteps = 400;
+nSteps = 400;% our for loop count
 dLog = (log10(stopFreq)-log10(startFreq))/nSteps;
+% log the freq of user input, divded by the for loop max
 
-
-freq(1) = startFreq
+freq(1) = startFreq%start of solution
 for fCount = 1: nSteps
-    w = j*freq(fCount)*2*pi;
-    Hval = subs(H(s),w);
-    Hval = eval(Hval);
-    magH(fCount) = norm(Hval);
-    angH(fCount) = angle(Hval)*180/pi;
+    w = j*freq(fCount)*2*pi;% frequency
+    Hval = subs(H(s),w);% replace s variables with w
+    Hval = eval(Hval);% evaulate 
+    magH(fCount) = norm(Hval); % vector magnitude
+    angH(fCount) = angle(Hval)*180/pi;% angle to radians
     
     if(fCount<nSteps)&& (freq(fCount)<stopFreq)
-        logNextFreq = log10(freq(fCount))+ dLog;
-        freq(fCount+1) = 10^logNextFreq;
+        logNextFreq = log10(freq(fCount))+ dLog;% update logNextFreq
+        freq(fCount+1) = 10^logNextFreq;% add to vector of solution
     end 
 end
 
-maxMag = max(magH);
-magH = magH/maxMag;
+maxMag = max(magH);% return max values from vector
+magH = magH/maxMag;% calculate magH
 
 figure()
+% create gain plot
 subplot(2,1,1)
-semilogx(freq,20*log10(magH))
+semilogx(freq,20*log10(magH))%log x axis
 clear title
 title(['Order,R,C HP:[',num2str(hpOrder),'; ',num2str(Rhp),...
     '; ',num2str(Chp),']  LP:[',num2str(lpOrder),...
@@ -85,8 +86,10 @@ ylim([-40 5])
 xlim([startFreq stopFreq]);
 ylabel('Gain (dB)');
 grid on
+
+% create phase plot
 subplot(2,1,2)
-semilogx(freq,angH)
+semilogx(freq,angH)% log x axis
 grid on
 xlabel('Frequency (Hz)');
 ylabel('Phase (Deg)');
