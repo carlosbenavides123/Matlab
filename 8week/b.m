@@ -1,4 +1,4 @@
-%file name: M_6a.m
+%file name: M_6.m
 %Last modified by Carlos Benavides on 10/24/2018
 clear all
 format compact
@@ -7,28 +7,18 @@ clc
 %define the symbolic variables that we will need
 syms t n aSym(n) bSym(n) f(t)
 
-% for 6.1a
-tStart = -1;
+
+%Using the heaviside built-in function instead of an in-line u(t)
+%This appears to b needed to work with the symbolic toolbox 
+%for this application
+
+for 6.1-e
+tStart = 0;
 tStop = 1;
-To = 4;
-f(t) = 1;
+To = t;
+f(t) = 4;
 wo = 2*pi/To;
 x(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
-
-tStart = 1;
-tStop = 3;
-To = 4;
-f(t) = -1;
-wo = 2*pi/To;
-x2(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
-
-a0       = int(x(t),t,tStart,tStop)/To
-aSym(n)  = simplify(int((x(t))*cos(n*wo*t),t,tStart,tStop)/(To/2))
-bSym(n)  = simplify(int((x(t))*sin(n*wo*t),t,tStart,tStop)/(To/2))
-
-a20       = int(x2(t),t,tStart,tStop)/To
-aSym2(n)  = simplify(int((x2(t))*cos(n*wo*t),t,tStart,tStop)/(To/2))
-bSym2(n)  = simplify(int((x2(t))*sin(n*wo*t),t,tStart,tStop)/(To/2))
 
 nMax    = 20;
 n       = 1:nMax;

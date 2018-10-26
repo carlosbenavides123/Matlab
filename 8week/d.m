@@ -1,4 +1,4 @@
-%file name: M_6a.m
+%file name: M_6d.m
 %Last modified by Carlos Benavides on 10/24/2018
 clear all
 format compact
@@ -7,18 +7,25 @@ clc
 %define the symbolic variables that we will need
 syms t n aSym(n) bSym(n) f(t)
 
-% for 6.1a
-tStart = -1;
-tStop = 1;
-To = 4;
-f(t) = 1;
+% for 6.1d
+tStart = -pi/4;
+tStop = 0;
+To = pi;
+f(t) = 4/pi;
 wo = 2*pi/To;
 x(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
 
-tStart = 1;
-tStop = 3;
-To = 4;
-f(t) = -1;
+tStart = 0;
+tStop = pi/4;
+To = pi;
+f(t) = 4/pi;
+wo = 2*pi/To;
+x2(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
+
+tStart = pi/4;
+tStop = (3*pi)/4;
+To = pi;
+f(t) = 0;
 wo = 2*pi/To;
 x2(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
 

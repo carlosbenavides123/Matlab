@@ -61,13 +61,17 @@ x2(t) = f(t) * (heaviside(t-tStart)-heaviside(t-tStop));
 % 
 
 a0       = int(x(t),t,tStart,tStop)/To
-aSym(n)  = simplify(int((x(t).*x2(t))*cos(n*wo*t),t,tStart,tStop)/(To/2))
-bSym(n)  = simplify(int((x(t).*x2(t))*sin(n*wo*t),t,tStart,tStop)/(To/2))
+aSym(n)  = simplify(int((x(t))*cos(n*wo*t),t,tStart,tStop)/(To/2))
+bSym(n)  = simplify(int((x(t))*sin(n*wo*t),t,tStart,tStop)/(To/2))
+
+a20       = int(x2(t),t,tStart,tStop)/To
+aSym2(n)  = simplify(int((x2(t))*cos(n*wo*t),t,tStart,tStop)/(To/2))
+bSym2(n)  = simplify(int((x2(t))*sin(n*wo*t),t,tStart,tStop)/(To/2))
 
 nMax    = 20;
 n       = 1:nMax;
-a       = eval(aSym(n));
-b       = eval(bSym(n));
+a       = eval(aSym(n)+aSym2(n));
+b       = eval(bSym(n)+bSym2(n));
 
 figure
 subplot(3,1,1)
@@ -77,7 +81,7 @@ subplot(3,1,2);
 stem(n,b)
 ylabel('b(n)');
 
-xApprox = a0;
+xApprox = a0+a20;
 for m = 1:nMax
     xApprox = xApprox + a(m)*cos(m*wo*t) + b(m)*sin(m*wo*t);
 end
@@ -88,4 +92,4 @@ subplot(3,1,3);
 plot(t,xCalc)
 grid on
 ylabel('x(t)')
-
+xlim([-7 7])
