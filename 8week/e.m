@@ -1,25 +1,26 @@
-%file name: M_6b.m
+%file name: M_6e.m
 %Last modified by David Schwartz on 10/11/2018
 clear all
 format compact
 clc
 
-%define the symbolic variables that we will need
+% THIS IS FOR C
+
 syms t n aSym(n) bSym(n) x(t) f(t)
 
-% THIS IS FOR B
-
-%This is a specifice example for 6.1-b
-tStart = -pi;
-tStop = pi;
-To = 10 * pi;
-f(t) = 1;
+tStart = 0;
+tStop = 1;
+To =  3;
+f(t) = t;
 wo = 2 * pi / To;
 x(t) = f(t) * (heaviside(t - tStart) - heaviside(t - tStop));
 
 a0 = int(x(t), t, tStart, tStop) / To
 aSym(n) = simplify(int(x(t) * cos(n * wo * t), t, tStart, tStop) / (To / 2))
 bSym(n) = simplify(int(x(t) * sin(n * wo * t), t, tStart, tStop) / (To / 2))
+
+pretty(aSym(n))
+pretty(bSym(n))
 
 nMax = 20;
 n = 1:nMax;
