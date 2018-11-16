@@ -10,7 +10,8 @@ clc
 % xxApprox(idx,:) = eval(xApprox(t))
 % basically with idx, it creates a row in xxApprox, and stores the many column values wrt to iteration
 idx = 1
-max = 0
+id = 0;
+M = 100;% random val 
 % alpha varies from 0.70 to 0.98 in steps of 0.02
 for alpha = 0.70:0.02:0.98
 
@@ -29,7 +30,7 @@ for alpha = 0.70:0.02:0.98
     X(w) = eval(X(w));
 
     % X(w) * complex conjugate of the same X(w)
-    Xsq(w) = X(w)*conj(X(w))
+    Xsq(w) = X(w)*conj(X(w));
 
     % Energy total of a signal
     Etot = int(Xsq(w) ,- inf, inf) / ( 2 * pi );
@@ -56,9 +57,9 @@ for alpha = 0.70:0.02:0.98
     hold on
 
 
-    Web = vpa(vpasolve(E(W) == alpha*Etot),3)
-    plot([0 maxW], [alpha alpha], '--')
-    plot([Web Web], [0 1], '--')
+    Web = vpa(vpasolve(E(W) == alpha*Etot),3);
+    plot([0 maxW], [alpha alpha], '--');
+    plot([Web Web], [0 1], '--');
     hold off
     subplot(3,1,3)
     
@@ -67,13 +68,9 @@ for alpha = 0.70:0.02:0.98
 
     xxApprox(idx,:) = eval(xApprox(t));
     
-    temp = nansum(xxApprox(idx,:))
-    
-    if (max < temp)
-        max = temp
-        id = idx
-    end
-    
+    %[h,p] = chi2gof(xxApprox(idx,:),'Alpha',0.01)
+    WebArray(idx) = Web;
+
     plot(t,xxApprox(idx,:))
     grid on
     hold on
@@ -83,10 +80,49 @@ for alpha = 0.70:0.02:0.98
     ylabel(txt)
     hold off;
 
+    % difference between both plots
+    deltaPlot = abs(xxApprox(idx,:) - xx);
+    
+    % make nans => 0
+    deltaPlot(isnan(deltaPlot))=0;
+    
+    % get percent diff
+    percentDiff = deltaPlot./xx;
+    
+    % result had inf, choose only real values
+    slice = find(percentDiff > 0 & percentDiff < 1);
+    
+    % update out vector
+    percentDiff = percentDiff(slice);
+    
+    % mean difference
+    z(idx) = mean(percentDiff);
+    
+    % find the best graph
+    % I assume want lowest mean val
+    if (M > z(idx))
+        M = z;
+        id = idx; % which graph has the lowest M 
+    end
+
     % increment idx to add xxAprox to next row in the matrix
     idx = idx + 1
 
     % reset every symbolic to avoid issues
     reset(symengine)
 end
+
+    % plot the results
+    figure(16)
+    alpha = 0.70:0.02:0.98;
+    plot(z,alpha);
+    grid on
+    hold on
+    txt = 'Alpha valus axis';
+    ylabel(txt)
+    xlabel('Measure between xxApprox(x) and xx')
+    hold off;
+    M
+    id
+    
 
